@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pansky.user.dao.TeaDao">
+
+    <resultMap type="com.pansky.user.entity.Tea" id="TeaMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="school" column="school" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="classNum" column="class_num" jdbcType="INTEGER"/>
+        <result property="sourceId" column="source_id" jdbcType="INTEGER"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TeaMap">
+        select
+          id, name, school, age, class_num, source_id, phone
+        from tea
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TeaMap">
+        select
+        id, name, school, age, class_num, source_id, phone
+        from tea
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="school != null and school != ''">
+                and school = #{school}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="classNum != null">
+                and class_num = #{classNum}
+            </if>
+            <if test="sourceId != null and sourceId != ''">
+                and source_id = #{sourceId}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from tea
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="school != null and school != ''">
+                and school = #{school}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="classNum != null">
+                and class_num = #{classNum}
+            </if>
+            <if test="sourceId != null and sourceId != ''">
+                and source_id = #{sourceId}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into tea(name, school, age, class_num, source_id, phone)
+        values (#{name}, #{school}, #{age}, #{classNum}, #{sourceId}, #{phone})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into tea(name, school, age, class_num, source_id, phone)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.school}, #{entity.age}, #{entity.classNum}, #{entity.sourceId}, #{entity.phone})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into tea(name, school, age, class_num, source_id, phone)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.school}, #{entity.age}, #{entity.classNum}, #{entity.sourceId}, #{entity.phone})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        school = values(school),
+        age = values(age),
+        class_num = values(class_num),
+        source_id = values(source_id),
+        phone = values(phone)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tea
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="school != null and school != ''">
+                school = #{school},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="classNum != null">
+                class_num = #{classNum},
+            </if>
+            <if test="sourceId != null and sourceId != ''">
+                source_id = #{sourceId},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tea where id = #{id}
+    </delete>
+
+</mapper>
+
