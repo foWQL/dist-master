@@ -1,5 +1,6 @@
 package com.pansky.common.utils;
 
+import cn.hutool.core.codec.Base64Decoder;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
@@ -26,8 +27,10 @@ public class SignSecretUtil {
 
     /**
      * 签名的 algorithm
+     * 常用的数字签名算法包括：MD5withRSA／SHA1withRSA／SHA256withRSA／SHA1withDSA／SHA256withDSA／SHA512withDSA／ECDSA等。
      */
     private static final String SIGN_ALGORITHM = "SHA256WithRSA";
+
 
     /**
      * 获取密钥对
@@ -135,39 +138,42 @@ public class SignSecretUtil {
     /**
      * 签名
      *
-     * @param data 待签名数据
-     * @param privateKey 私钥
+     * @param sourceData 原始字符串
+     * @param privateKey 公钥
      * @return 签名
      */
-    public static String sign(String data, PrivateKey privateKey) throws Exception {
-        byte[] keyBytes = privateKey.getEncoded();
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+    public static String sign(String sourceData, String privateKey) throws Exception {
+
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PrivateKey key = keyFactory.generatePrivate(keySpec);
-//        Signature signature = Signature.getInstance("MD5withRSA");
+        byte[] decodedKey = Base64.decodeBase64(privateKey);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(decodedKey);
+        PrivateKey priKey = keyFactory.generatePrivate(keySpec);
+
+//      Signature signature = Signature.getInstance("MD5withRSA");
         Signature signature = Signature.getInstance(SIGN_ALGORITHM);
-        signature.initSign(key);
-        signature.update(data.getBytes());
+        signature.initSign(priKey);
+        signature.update(sourceData.getBytes());
         return new String(Base64.encodeBase64(signature.sign()));
     }
 
     /**
      * 验签
      *
-     * @param srcData 原始字符串
+     * @param sourceData 原始字符串
      * @param publicKey 公钥
-     * @param sign 签名
+     * @param sign 签名后的内容
      * @return 是否验签通过
      */
-    public static boolean verify(String srcData, PublicKey publicKey, String sign) throws Exception {
-        byte[] keyBytes = publicKey.getEncoded();
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+    public static boolean verify(String sourceData, String publicKey, String sign) throws Exception {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PublicKey key = keyFactory.generatePublic(keySpec);
-//        Signature signature = Signature.getInstance("MD5withRSA");
+        byte[] decodedKey = Base64.decodeBase64(publicKey);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
+        PublicKey pubKey = keyFactory.generatePublic(keySpec);
+
+//      Signature signature = Signature.getInstance("MD5withRSA");
         Signature signature = Signature.getInstance(SIGN_ALGORITHM);
-        signature.initVerify(key);
-        signature.update(srcData.getBytes());
+        signature.initVerify(pubKey);
+        signature.update(sourceData.getBytes());
         return signature.verify(Base64.decodeBase64(sign.getBytes()));
     }
 
@@ -187,9 +193,9 @@ public class SignSecretUtil {
         System.out.println("解密后内容:" + decryptData);
 
         // RSA签名
-        String sign = sign(data, getPrivateKey(privateKey));
+        String sign = sign(data,privateKey);
         // RSA验签
-        boolean result = verify(data, getPublicKey(publicKey), sign);
+        boolean result = verify(data, publicKey, sign);
         System.out.print("验签结果:" + result);
 
     }
