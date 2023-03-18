@@ -13,7 +13,8 @@ spring:
 logging:
   level:
     com.pansky: debug
-
+# 域名地址（数据库、redis、nacos服务器ip）
+# k8时需在环境变量中设置
 fo:
   pansky:
     com: 127.0.0.1
