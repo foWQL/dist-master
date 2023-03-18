@@ -1,88 +1,19 @@
 server:
-  port: 8080
+  port: 9000
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC
-    username: root
-    password: root123
-    driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: userService
+  profiles:
+    active: dev
   cloud:
     nacos:
-      server-addr: localhost:8848
-      discovery:
-        namespace: 89e1284d-cd27-4f10-9961-3ff1297cb751
       config:
         file-extension: yml
-  redis:
-    database: 0
-    host: 10.7.93.99
-    port: 6379
-    password:
-mybatis:
-  type-aliases-package: com.pansky.user.entiy
-  configuration:
-    map-underscore-to-camel-case: true
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath:mapper/*.xml
-#logging:
-#  level:
-#    com.pansky: debug
+        server-addr: ${fo.pansky.com}:8848
+logging:
+  level:
+    com.pansky: debug
 
-  #分布式事务Seata配置
-#seata:
-#  enabled: true
-#  tx-service-group: my_test_tx_group  # 可以每个应用独立取名，也可以使用相同的名字
-#  # 开启数据源代理
-#  enable-auto-data-source-proxy: true
-#  # 数据源代理模式，使用AT模式
-#
-#  service:
-#    vgroup-mapping:
-#      my_test_tx_group: default       # xxxx分组使用Seata的默认配置完成事务
-#    grouplist:
-#      default: 10.7.93.99:8091     # 配置seata的地址和端口号(8091是默认端口号)
-#
-#  # 配置中心，需要和 seata server 保持一致
-#  config:
-#    type: nacos
-#    nacos:
-#      server-addr: 10.7.93.99:8848
-#      namespace: 89e1284d-cd27-4f10-9961-3ff1297cb751
-#      group: DEFAULT_GROUP
-#      dataId: seataServer.properties
-#      username: nacos
-#      password: nacos
-#
-#  # 注册中心，需要和 seata server 保持一致
-#  registry:
-#    type: nacos
-#    nacos:
-#      application: seata-server
-#      server-addr: 10.7.93.99:8848
-#      namespace: 89e1284d-cd27-4f10-9961-3ff1297cb751
-#      group: DEFAULT_GROUP
-#      cluster: default
-#      username: nacos
-#      password: nacos
-#  client:
-#    rm:
-#      lock:
-#        # 校验或占用全局锁重试间隔，单位ms
-#        retry-interval: 10
-#        # 校验或占用全局锁重试次数
-#        retry-times: 10
-#        # 分支事务与其它全局回滚事务冲突时锁策略,true，优先释放本地锁让回滚成功
-#        retry-policy-branch-rollback-on-conflict: true
-#    tm:
-#      # 一阶段全局提交结果上报TC重试次数
-#      commit-retry-count: 5
-#      # 一阶段全局回滚结果上报TC重试次数
-#      rollback-retry-count: 5
-#      # 分布式事物超时时间
-#      #      default-global-transaction-timeout: 600000
-#      # 降级开关,false 不打开
-#      degrade-check: false
-#      degrade-check-period: 2000
-#      degrade-check-allow-times: 10
+fo:
+  pansky:
+    com: 127.0.0.1
