@@ -48,7 +48,7 @@
         推荐使用spring-cloud-starter-alibaba-seata，而不要使用seata-spring-boot-starter
         后者没有对feign进行处理，会导致fein调用不传xid，全局事务失效
         -->
-         <dependency>
+        <!-- <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
             <version>2.2.6.RELEASE</version>
@@ -63,7 +63,7 @@
             <groupId>io.seata</groupId>
             <artifactId>seata-spring-boot-starter</artifactId>
             <version>1.5.1</version>
-        </dependency>
+        </dependency>-->
 
         <!--  Seata 完成分布式事务的两个相关依赖(Seata会自动使用其中的资源)  -->
         <dependency>
