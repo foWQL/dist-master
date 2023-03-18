@@ -20,6 +20,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/gray")
+    public String gray() {
+        System.out.println("console : k8s gray --- 2" );
+        String s = "k8s gray --- 2";
+        return s ;
+    }
+
     @GetMapping("{id}")
     public User findById(@PathVariable("id") String id) {
         return userService.findById(id);
