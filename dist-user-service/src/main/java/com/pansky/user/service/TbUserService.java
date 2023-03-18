@@ -69,4 +69,5 @@ public interface TbUserService {
     boolean deleteById(Integer id);
 
 
+    String deleteKey(String key);
 }

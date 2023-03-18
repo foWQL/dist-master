@@ -237,4 +237,17 @@ public class TbUserServiceImpl implements TbUserService {
     public boolean deleteById(Integer id) {
         return this.tbUserDao.deleteById(id) > 0;
     }
+
+    @Override
+    public String deleteKey(String key) {
+        String res = "";
+        Boolean flag = redisTemplate.hasKey(key);
+         if (flag) {
+            res  = (String) redisTemplate.opsForValue().get(key);
+            System.out.println("key对应的值是 " + res);
+        }else {
+             System.out.println("不存在对应的key " + key);
+         }
+         return res;
+    }
 }

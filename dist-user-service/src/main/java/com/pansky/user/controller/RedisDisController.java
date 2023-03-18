@@ -20,6 +20,12 @@ import javax.annotation.Resource;
 @RequestMapping("redisDis")
 public class RedisDisController {
 
+    @PostMapping("/delete")
+    public String deleteKey(String key) {
+        return this.tbUserService.deleteKey(key);
+    }
+
+
     /**
      * 新增数据
      *

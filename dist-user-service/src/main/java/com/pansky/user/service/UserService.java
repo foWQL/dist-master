@@ -2,7 +2,6 @@ package com.pansky.user.service;
 
 import com.pansky.user.entity.User;
 import com.pansky.user.dao.UserMapper;
-import io.seata.core.context.RootContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class UserService {
 
     @Transactional
     public String updateUser(String id, int age) {
-        log.info("user服务中全局事务id=================>{}", RootContext.getXID());
+//        log.info("user服务中全局事务id=================>{}", RootContext.getXID());
         userMapper.updateUser(id, age);
 
         if (id.equals("101")) {
