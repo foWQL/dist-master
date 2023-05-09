@@ -88,6 +88,19 @@
             <artifactId>junit</artifactId>
         </dependency>
 
+        <!-- logstash收集日志 -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>7.2</version>
+        </dependency>
+        <!-- will be automatically pulled in by Maven's transitivity rules -->
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.1.9</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>user-service</finalName>

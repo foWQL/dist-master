@@ -13,6 +13,11 @@ spring:
 logging:
   level:
     com.pansky: debug
+log:
+  store:
+    target: logstash
+  logstash:
+    url: 192.168.137.10:5044
 # 域名地址（数据库、redis、nacos服务器ip）
 # k8时需在环境变量中设置
 fo:

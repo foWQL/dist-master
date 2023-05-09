@@ -1,0 +1,27 @@
+server:
+  port: 9010
+spring:
+  application:
+    name: dist-flow
+#  profiles:
+#    active: dev
+#  cloud:
+#    nacos:
+#      config:
+#        file-extension: yml
+#        server-addr: ${fo.pansky.com}:8848
+logging:
+  level:
+    com.pansky: debug
+    org.flowable.engine.impl.persistence.entity.*: debug
+    org.flowable.task.service.impl.persistence.entity.*: debug #日志配置
+# 域名地址（数据库、redis、nacos服务器ip）
+# k8时需在环境变量中设置
+fo:
+  pansky:
+    com: 127.0.0.1
+flowable:
+  #关闭定时任务JOB
+  async-executor-activate: false
+  #将databaseSchemaUpdate设置为true:当flowable发现库与数据库表结构不一致时，会自动更新数据库表结构。
+  database-schema-update: true

@@ -13,6 +13,8 @@
         <module>feign-api</module>
         <module>gateway</module>
         <module>dist-common</module>
+        <module>dist-flow</module>
+        <module>dist-elk</module>
     </modules>
 
     <packaging>pom</packaging>
