@@ -15,6 +15,7 @@
         <module>dist-common</module>
         <module>dist-flow</module>
         <module>dist-elk</module>
+        <module>dist-message</module>
     </modules>
 
     <packaging>pom</packaging>
