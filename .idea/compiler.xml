@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dist-common" />
+        <module name="dist-message" />
         <module name="dist-elk" />
         <module name="dist-user-service" />
         <module name="dist-flow" />
@@ -24,6 +25,7 @@
       <module name="dist-common" options="-parameters" />
       <module name="dist-elk" options="-parameters" />
       <module name="dist-flow" options="-parameters" />
+      <module name="dist-message" options="-parameters" />
       <module name="dist-order-service" options="-parameters" />
       <module name="dist-redis" options="-parameters" />
       <module name="dist-third-service" options="-parameters" />
