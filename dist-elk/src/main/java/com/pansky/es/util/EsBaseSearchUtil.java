@@ -77,10 +77,10 @@ public class EsBaseSearchUtil {
      * @param index
      * @return
      */
-    public boolean createIndex(String index) throws Exception {
+    public boolean createIndex(String indexName) throws Exception {
 
         // 1、创建 创建索引request 参数：索引名mess
-        CreateIndexRequest indexRequest = new CreateIndexRequest("goods");
+        CreateIndexRequest indexRequest = new CreateIndexRequest(indexName);
         // 2、设置索引的settings
         // 3、设置索引的mappings
         String mapping = "{\n" +
