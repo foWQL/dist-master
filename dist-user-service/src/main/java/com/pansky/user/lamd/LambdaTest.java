@@ -1,6 +1,8 @@
 package com.pansky.user.lamd;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.*;
@@ -14,15 +16,99 @@ public class LambdaTest {
     List<LamdUser> userList = Arrays.asList(
             new LamdUser("1","张三", "北京朝阳十八里屯", 24, "15860307895", "W", Arrays.asList("g1", "g2")),
             new LamdUser("2","李四", "南京外城烟雨台", 20, "13959606235", "W", Arrays.asList("g3", "g4", "g5")),
-            new LamdUser("2","王五", "漳州金庭馆", 28, "15860301597", "M", Arrays.asList("g6")),
+            new LamdUser("2","王男", "漳州金庭馆", 28, "15860301597", "M", Arrays.asList("g6")),
+            new LamdUser("2","王女", "漳州金庭馆", 17, "15860301597", "W", Arrays.asList("g6")),
             new LamdUser("3","赵四", "厦门五缘湾", 36, "15860301547", "W", Arrays.asList("g7", "g8", "g9", "g10")),
+            new LamdUser("3","陈贵", "珠江湾", 32, "15860301547", "W", Arrays.asList("g7", "g8", "g9", "g10")),
             new LamdUser("3","海大富", "漳州金宾馆", 45, "15860312013", "M", Arrays.asList("g11", "g12", "g13"))
     );
 
     List<LamdUser> tempList = Arrays.asList(
             new LamdUser("22","AA", "Tokyo", 24, "15860307895", "W", Arrays.asList("g1", "g2")),
-             new LamdUser("33","BB", "Tokyo", 28, "15860301597", "M", Arrays.asList("g6"))
+            new LamdUser("33","BB", "Tokyo", 28, "15860301597", "M", Arrays.asList("g6"))
      );
+
+
+    /**
+
+     * 将id进行合并nums, sums 相加道回合并后的集合使用Java8的流进行处理
+     * https://blog.csdn.net/yellowatumn/article/details/124927535
+     */
+
+    /*public static List<BillsNums> merge(List<BillsNums> list) {
+
+        List<BillsNums> result = list.stream()
+
+                // 表示id为key， 接着如果有重复的，那么从BillsNums对象o1与o2中筛选出一个，这里选择o1，
+
+                // 并把id重复，需要将nums和sums与o1进行合并的o2, 赋值给o1，最后返回o1
+
+                .collect(Collectors.toMap(BillsNums::getId, a -> a, (o1,o2)-> {
+
+                    o1.setNums(o1.getNums() + o2.getNums());
+
+                    o1.setSums(o1.getSums() + o2.getSums());
+
+                    return o1;
+
+                })).values().stream().collect(Collectors.toList());
+
+        return result ;
+
+    }*/
+
+
+
+    @Test
+    public void test1() throws Exception{
+        for (LamdUser lamdUser : userList) {
+            switch (lamdUser.getId()){
+                case "1" :
+                case "2":
+                    System.out.println("1和2都是我");
+                    break;
+                case "3":
+                    System.out.println("我是3");
+                    break;
+                default: break;
+            }
+        }
+
+    }
+
+    @Test
+    public void temp(){
+
+        Map<String, List<LamdUser>> listMap1 = userList.stream().collect(Collectors.groupingBy(LamdUser::getId));
+        System.out.println("map===" + JSON.toJSONString(listMap1));
+
+        Map<String, List<String>> listMap2 = userList.stream().collect(Collectors.groupingBy(LamdUser::getId,
+                Collectors.mapping(
+                        LamdUser::getId, Collectors.toList()
+                )));
+        System.out.println("map===" + JSON.toJSONString(listMap2));
+
+        Map<String, List<TempUser>> listMap = userList.stream().collect(Collectors.groupingBy(LamdUser::getId,
+                Collectors.mapping(p -> {
+                            TempUser u = new TempUser();
+                            u.setId(p.getId());
+//                            u.setName(p.getName());
+                            if (p.getName().contains("李")) {
+                                u.setXCity("西安");
+                            } else {
+                                u.setYCity("北京");
+                            }
+                            return u;
+                        }, Collectors.toList()
+                )));
+        listMap.entrySet().forEach(
+                x-> {System.out.println("key---"+x.getKey());
+                    System.out.println(x.getValue());}
+        );
+
+        List<TempUser> maptoList = listMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+        maptoList.forEach(System.out::println);
+    }
 
     /**
      * filter : 条件过滤 类似于if,过滤后还是当前流
@@ -36,10 +122,10 @@ public class LambdaTest {
 
         //条件过滤后得到一个新的list
         List<LamdUser> list2 = userList.stream().filter(user -> {
-            return user.getAge() > 23 ;
+            return user.getAge() > 24 ;
         }).collect(Collectors.toList());
 
-        List<LamdUser> list3 = userList.stream().filter(user ->user.getAge() > 23).collect(Collectors.toList());
+        List<LamdUser> list3 = userList.stream().filter(user ->user.getAge() > 24).collect(Collectors.toList());
 
         //userStream是过滤后获得的新的流 ， 对原users不产生改变
         userStream.forEach(x -> System.out.println("过滤后"+x.getAge()));
@@ -133,9 +219,9 @@ public class LambdaTest {
             System.out.println(entry.getKey() + " : "+entry.getValue());
         }*/
 
-        //给出key重复时，使用哪个key作为主键，以下代码中的(id1, id2) -> id2)代表id1和id2键重复时返回id2做主键
+        //给出key重复时，使用哪个key作为主键，以下代码中的(id1, id2) -> id1)代表id1和id2键重复时，返回前一个
         // 第二种（返回整个对象）：
-        Map<String, LamdUser> map2 = userList.stream().collect(Collectors.toMap(LamdUser::getId, Function.identity() ,(id1, id2)->id2 ));
+        Map<String, LamdUser> map2 = userList.stream().collect(Collectors.toMap(LamdUser::getId, Function.identity() ,(id1, id2)->id1 ));
         for(Map.Entry<String, LamdUser>  entry: map2.entrySet()){
             System.out.println(entry.getKey() + " : "+entry.getValue());
         }
@@ -157,8 +243,11 @@ public class LambdaTest {
         //以某个属性分组
         Map<String, List<LamdUser>> map = userList.stream().collect(Collectors.groupingBy(LamdUser::getId));
         System.out.println("collectors分组功能， map:" + map);
-
+        System.out.println("------------------------");
         //多级分组 先按sex分组，分完组之后，在每个组里面再进行分一次组
+        Map<String, Map<String, List<LamdUser>>> multiMap = userList.stream().collect(Collectors.groupingBy((LamdUser::getId), Collectors.groupingBy(LamdUser::getSex)));
+        System.out.println(multiMap);
+        System.out.println("------------------------");
         Map<String, Map<String, List<LamdUser>>> collect = userList.stream().collect(Collectors.groupingBy(
                 LamdUser::getSex, Collectors.groupingBy(u -> {
                     if (u.getAge() <= 24) {
@@ -200,8 +289,9 @@ public class LambdaTest {
         });*/
 
         System.out.println("升序2：");
-        userList.stream().sorted(Comparator.comparing(LamdUser::getId)).collect(Collectors.toList()).forEach(System.out::println);
+        userList.stream().sorted(Comparator.comparing(LamdUser::getAge)).collect(Collectors.toList()).forEach(System.out::println);
 
+        //排序了，但是用了map，会将原本的list<User> 变成了 List<String>
         System.out.println("升序3：");
         userList.stream().map(user -> user.getAge()).sorted().forEach(System.out::println);
 
