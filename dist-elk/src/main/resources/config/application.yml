@@ -1,6 +1,6 @@
 elasticsearch:
-  clusterName: es-cluster
-  hosts: 43.142.243.124:9200
+#  clusterName: es-cluster
+  hosts: 192.168.137.10:9200
   #es用户名
   userName: elastic
   #es密码
