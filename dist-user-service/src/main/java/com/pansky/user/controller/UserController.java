@@ -1,5 +1,6 @@
 package com.pansky.user.controller;
 
+import com.pansky.user.entity.Student;
 import com.pansky.user.entity.User;
 import com.pansky.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,30 @@ public class UserController {
 
     @Value("${logging.tx}")
     private String tx;
+
+    @GetMapping("/test")
+    public User test() {
+       User user = new User();
+       user.setAge(12345678);
+       user.setUsername("张三丰菲菲");
+       user.setAddress("中国陕西省西安市");
+       System.out.println("user = " + user);
+       return user ;
+
+    }
+
+    @GetMapping("/student")
+    public Student getStudent(){
+        Student student = new Student();
+        student.setName("张三三");
+        student.setIdCard("44082199612054343");
+        student.setBankCard("62173300255879654448");
+        student.setFixedPhone("3110026");
+        student.setAddress("广东省广州市天河区");
+        student.setEmail("1258398545@qq.com");
+        student.setRemark("sadhaonsdoasnodnaonodsn是大祭司大祭司你");
+        return student;
+    }
 
     @GetMapping("/gray")
     public String gray() {
