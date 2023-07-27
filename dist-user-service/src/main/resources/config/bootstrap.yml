@@ -5,19 +5,19 @@ spring:
     name: userService
   profiles:
     active: dev
-  cloud:
-    nacos:
-      config:
-        file-extension: yml
-        server-addr: ${fo.pansky.com}:8848
+#  cloud:
+#    nacos:
+#      config:
+#        file-extension: yml
+#        server-addr: ${fo.pansky.com}:8848
 logging:
   level:
     com.pansky: debug
-log:
-  store:
-    target: logstash
-  logstash:
-    url: 192.168.137.10:5044
+#log:
+#  store:
+#    target: logstash
+#  logstash:
+#    url: 192.168.137.10:5044
 # 域名地址（数据库、redis、nacos服务器ip）
 # k8时需在环境变量中设置
 fo:

@@ -18,13 +18,13 @@ public class UserApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
-        for (int i = 0; i <10 ; i++) {
+         /*for (int i = 0; i <10 ; i++) {
             log.warn("用户服务启动日志--{}",i);
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }
